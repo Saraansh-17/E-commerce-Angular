@@ -1,0 +1,56 @@
+<div class="orders-page">
+  <div class="container">
+    <h1 class="page-title">My Orders</h1>
+
+    @if (loading) {
+      <app-loading></app-loading>
+    } @else if (orders.length === 0) {
+      <div class="no-orders card">
+        <span class="icon-large">📦</span>
+        <h2>No orders yet</h2>
+        <p>Start shopping to see your orders here</p>
+        <a class="btn btn-primary" routerLink="/products">
+          Browse Products
+        </a>
+      </div>
+    } @else {
+      <div class="orders-list">
+        @for (order of orders; track order.id) {
+          <div class="order-card card">
+            <div class="order-header">
+              <div class="order-info">
+                <h3>Order #{{ order.id }}</h3>
+                <p class="order-date">Placed on {{ order.createdAt | date:'medium' }}</p>
+              </div>
+              <span class="chip" [class]="getStatusColor(order.status)">{{ order.status | titlecase }}</span>
+            </div>
+
+            <div class="order-items">
+              @for (item of order.items; track item.product.id) {
+                <div class="order-item">
+                  <img [src]="item.product.image" [alt]="item.product.name" class="item-image" />
+                  <div class="item-details">
+                    <p class="item-name">{{ item.product.name }}</p>
+                    <p class="item-quantity">Quantity: {{ item.quantity }}</p>
+                  </div>
+                  <span class="item-price">${{ (item.product.price * item.quantity).toFixed(2) }}</span>
+                </div>
+              }
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="order-footer">
+              <div class="order-total">
+                <strong>Total: ${{ order.total.toFixed(2) }}</strong>
+              </div>
+              <a class="btn btn-ghost" routerLink="/orders/{{ order.id }}">
+                View Details
+              </a>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

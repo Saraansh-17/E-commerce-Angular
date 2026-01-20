@@ -1,0 +1,61 @@
+<header class="header">
+  <div class="header-content">
+    <a routerLink="/" class="logo" aria-label="Go to home">
+      <span class="logo-mark" aria-hidden="true">E</span>
+      <span class="logo-text">E-Commerce</span>
+    </a>
+
+    <div class="search">
+      <input
+        class="search-input"
+        type="text"
+        [(ngModel)]="searchQuery"
+        (keyup.enter)="onSearch()"
+        placeholder="Search products..."
+        aria-label="Search products"
+      />
+      <button class="btn btn-ghost search-btn" type="button" (click)="onSearch()" aria-label="Search">
+        <span aria-hidden="true">⌕</span>
+      </button>
+    </div>
+
+    <nav class="nav">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a routerLink="/products" routerLinkActive="active">Products</a>
+      @if (isSeller()) {
+        <a routerLink="/seller" routerLinkActive="active">Seller</a>
+      }
+    </nav>
+
+    <div class="actions">
+      <a class="icon-btn" routerLink="/cart" [attr.aria-label]="'Shopping cart with ' + cartItemCount() + ' items'">
+        <span class="icon" aria-hidden="true">🛒</span>
+        @if (cartItemCount() > 0) {
+          <span class="badge" aria-hidden="true">{{ cartItemCount() }}</span>
+        }
+      </a>
+
+      @if (isAuthenticated()) {
+        <div class="user">
+          <button type="button" class="icon-btn" (click)="toggleUserMenu()" aria-label="Open user menu">
+            <span class="icon" aria-hidden="true">👤</span>
+          </button>
+          @if (userMenuOpen) {
+            <div class="menu" (mouseleave)="closeUserMenu()">
+              <div class="menu-header">
+                <div class="menu-name">{{ currentUser()?.firstName }} {{ currentUser()?.lastName }}</div>
+                <div class="menu-email">{{ currentUser()?.email }}</div>
+              </div>
+              <div class="menu-sep"></div>
+              <a class="menu-item" routerLink="/orders" (click)="closeUserMenu()">My Orders</a>
+              <button class="menu-item danger" type="button" (click)="logout()">Logout</button>
+            </div>
+          }
+        </div>
+      } @else {
+        <a class="btn btn-ghost" routerLink="/auth/login">Login</a>
+        <a class="btn btn-primary" routerLink="/auth/register">Sign Up</a>
+      }
+    </div>
+  </div>
+</header>

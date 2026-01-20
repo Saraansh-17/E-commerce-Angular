@@ -1,0 +1,38 @@
+<article class="product-card" [routerLink]="['/products', product.id]" tabindex="0">
+  <div class="product-image-container">
+    <img [src]="product.image" [alt]="product.name" class="product-image" loading="lazy" />
+    @if (isOnSale()) {
+      <span class="sale-badge">-{{ getDiscountPercent() }}%</span>
+    }
+    @if (product.stock === 0) {
+      <div class="out-of-stock-overlay">Out of stock</div>
+    }
+  </div>
+
+  <div class="product-body">
+    <div class="meta">
+      <div class="category">{{ product.category }}</div>
+      <div class="rating" aria-label="Rating {{ product.rating }} out of 5">
+        <span class="star" aria-hidden="true">★</span>
+        <span class="rating-value">{{ product.rating }}</span>
+        <span class="review-count">({{ product.reviewCount }})</span>
+      </div>
+    </div>
+
+    <h3 class="product-name">{{ product.name }}</h3>
+
+    <div class="product-price">
+      <span class="current-price">${{ product.price.toFixed(2) }}</span>
+      @if (isOnSale()) {
+        <span class="original-price">${{ product.originalPrice!.toFixed(2) }}</span>
+      }
+    </div>
+
+    @if (showAddToCart && product.stock > 0) {
+      <button class="btn btn-surface add-to-cart-button" type="button" (click)="onAddToCart($event)">
+        <span aria-hidden="true">+</span>
+        Add to cart
+      </button>
+    }
+  </div>
+</article>

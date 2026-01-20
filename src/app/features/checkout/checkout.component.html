@@ -1,0 +1,220 @@
+<div class="checkout-page">
+  <div class="container">
+    <h1 class="page-title">Checkout</h1>
+
+    <div class="checkout-content">
+      <div class="form-section">
+        <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+          <div class="form-card card">
+            <h2>Shipping Address</h2>
+            
+            <div class="form-row">
+              <div class="form-field" [class.error]="hasError('firstName', 'required') || hasError('firstName', 'minlength')">
+                <label class="label" for="firstName">First Name</label>
+                <input id="firstName" class="input" type="text" formControlName="firstName" required />
+                @if (hasError('firstName', 'required')) {
+                  <div class="error-message">First name is required</div>
+                }
+                @if (hasError('firstName', 'minlength')) {
+                  <div class="error-message">First name must be at least 2 characters</div>
+                }
+              </div>
+
+              <div class="form-field" [class.error]="hasError('lastName', 'required')">
+                <label class="label" for="lastName">Last Name</label>
+                <input id="lastName" class="input" type="text" formControlName="lastName" required />
+                @if (hasError('lastName', 'required')) {
+                  <div class="error-message">Last name is required</div>
+                }
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field" [class.error]="hasError('email', 'required') || hasError('email', 'email')">
+                <label class="label" for="email">Email</label>
+                <input id="email" class="input" type="email" formControlName="email" required />
+                @if (hasError('email', 'required')) {
+                  <div class="error-message">Email is required</div>
+                }
+                @if (hasError('email', 'email')) {
+                  <div class="error-message">Invalid email format</div>
+                }
+              </div>
+
+              <div class="form-field" [class.error]="hasError('phone', 'required') || hasError('phone', 'pattern')">
+                <label class="label" for="phone">Phone</label>
+                <input id="phone" class="input" type="tel" formControlName="phone" required />
+                @if (hasError('phone', 'required')) {
+                  <div class="error-message">Phone is required</div>
+                }
+                @if (hasError('phone', 'pattern')) {
+                  <div class="error-message">Invalid phone number</div>
+                }
+              </div>
+            </div>
+
+            <div class="form-field full-width" [class.error]="hasError('street', 'required')">
+              <label class="label" for="street">Street Address</label>
+              <input id="street" class="input" type="text" formControlName="street" required />
+              @if (hasError('street', 'required')) {
+                <div class="error-message">Street address is required</div>
+              }
+            </div>
+
+            <div class="form-row">
+              <div class="form-field" [class.error]="hasError('city', 'required')">
+                <label class="label" for="city">City</label>
+                <input id="city" class="input" type="text" formControlName="city" required />
+                @if (hasError('city', 'required')) {
+                  <div class="error-message">City is required</div>
+                }
+              </div>
+
+              <div class="form-field" [class.error]="hasError('state', 'required')">
+                <label class="label" for="state">State</label>
+                <input id="state" class="input" type="text" formControlName="state" required />
+                @if (hasError('state', 'required')) {
+                  <div class="error-message">State is required</div>
+                }
+              </div>
+
+              <div class="form-field" [class.error]="hasError('zipCode', 'required') || hasError('zipCode', 'pattern')">
+                <label class="label" for="zipCode">Zip Code</label>
+                <input id="zipCode" class="input" type="text" formControlName="zipCode" required />
+                @if (hasError('zipCode', 'required')) {
+                  <div class="error-message">Zip code is required</div>
+                }
+                @if (hasError('zipCode', 'pattern')) {
+                  <div class="error-message">Invalid zip code format</div>
+                }
+              </div>
+            </div>
+
+            <div class="form-field full-width" [class.error]="hasError('country', 'required')">
+              <label class="label" for="country">Country</label>
+              <input id="country" class="input" type="text" formControlName="country" required />
+              @if (hasError('country', 'required')) {
+                <div class="error-message">Country is required</div>
+              }
+            </div>
+          </div>
+
+          <div class="form-card card">
+            <h2>Payment Method</h2>
+            
+            <div class="radio-group">
+              @for (method of paymentMethods; track method.value) {
+                <label class="radio-option">
+                  <input type="radio" [value]="method.value" formControlName="paymentMethod" />
+                  <span>{{ method.label }}</span>
+                </label>
+              }
+            </div>
+
+            @if (checkoutForm.get('paymentMethod')?.value === 'credit-card' || checkoutForm.get('paymentMethod')?.value === 'debit-card') {
+              <div class="card-details">
+                <div class="form-field full-width" [class.error]="hasError('cardNumber', 'required') || hasError('cardNumber', 'pattern')">
+                  <label class="label" for="cardNumber">Card Number</label>
+                  <input id="cardNumber" class="input" type="text" formControlName="cardNumber" placeholder="1234 5678 9012 3456" maxlength="16" />
+                  @if (hasError('cardNumber', 'required')) {
+                    <div class="error-message">Card number is required</div>
+                  }
+                  @if (hasError('cardNumber', 'pattern')) {
+                    <div class="error-message">Invalid card number</div>
+                  }
+                </div>
+
+                <div class="form-field full-width" [class.error]="hasError('cardHolder', 'required')">
+                  <label class="label" for="cardHolder">Card Holder Name</label>
+                  <input id="cardHolder" class="input" type="text" formControlName="cardHolder" />
+                  @if (hasError('cardHolder', 'required')) {
+                    <div class="error-message">Card holder name is required</div>
+                  }
+                </div>
+
+                <div class="form-row">
+                  <div class="form-field" [class.error]="hasError('expiryDate', 'required') || hasError('expiryDate', 'pattern')">
+                    <label class="label" for="expiryDate">Expiry Date</label>
+                    <input id="expiryDate" class="input" type="text" formControlName="expiryDate" placeholder="MM/YY" maxlength="5" />
+                    @if (hasError('expiryDate', 'required')) {
+                      <div class="error-message">Expiry date is required</div>
+                    }
+                    @if (hasError('expiryDate', 'pattern')) {
+                      <div class="error-message">Invalid format (MM/YY)</div>
+                    }
+                  </div>
+
+                  <div class="form-field" [class.error]="hasError('cvv', 'required') || hasError('cvv', 'pattern')">
+                    <label class="label" for="cvv">CVV</label>
+                    <input id="cvv" class="input" type="password" formControlName="cvv" maxlength="4" />
+                    @if (hasError('cvv', 'required')) {
+                      <div class="error-message">CVV is required</div>
+                    }
+                    @if (hasError('cvv', 'pattern')) {
+                      <div class="error-message">Invalid CVV</div>
+                    }
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+
+          <button class="btn btn-primary submit-button" type="submit" [disabled]="submitting">
+            @if (submitting) {
+              Processing...
+            } @else {
+              Place Order
+            }
+          </button>
+        </form>
+      </div>
+
+      @if (cartSummary) {
+        <div class="order-summary card">
+          <h2>Order Summary</h2>
+          
+          <div class="summary-items">
+            @for (item of cartSummary.items; track item.product.id) {
+              <div class="summary-item">
+                <img [src]="item.product.image" [alt]="item.product.name" class="item-image" />
+                <div class="item-details">
+                  <p class="item-name">{{ item.product.name }}</p>
+                  <p class="item-quantity">Qty: {{ item.quantity }}</p>
+                </div>
+                <span class="item-price">${{ (item.product.price * item.quantity).toFixed(2) }}</span>
+              </div>
+            }
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="summary-totals">
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span>${{ cartSummary.subtotal.toFixed(2) }}</span>
+            </div>
+            <div class="summary-row">
+              <span>Tax (10%)</span>
+              <span>${{ cartSummary.tax.toFixed(2) }}</span>
+            </div>
+            <div class="summary-row">
+              <span>Shipping</span>
+              <span>
+                @if (cartSummary.shipping === 0) {
+                  <span class="free-shipping">FREE</span>
+                } @else {
+                  ${{ cartSummary.shipping.toFixed(2) }}
+                }
+              </span>
+            </div>
+            <div class="divider"></div>
+            <div class="summary-row total-row">
+              <span><strong>Total</strong></span>
+              <span><strong>${{ cartSummary.total.toFixed(2) }}</strong></span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

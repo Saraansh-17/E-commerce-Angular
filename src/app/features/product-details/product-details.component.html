@@ -1,0 +1,92 @@
+@if (loading) {
+  <app-loading></app-loading>
+} @else if (product) {
+  <div class="product-details-page">
+    <div class="container">
+      <button class="btn btn-ghost back-button" type="button" (click)="router.navigate(['/products'])">
+        ← Back to Products
+      </button>
+
+      <div class="product-content">
+        <div class="image-section card">
+          <div class="main-image">
+            <img [src]="product.images[selectedImageIndex] || product.image" [alt]="product.name" loading="lazy" />
+          </div>
+          @if (product.images.length > 1) {
+            <div class="thumbnail-images">
+              @for (image of product.images; track $index) {
+                <img
+                  [src]="image"
+                  [alt]="product.name"
+                  [class.active]="selectedImageIndex === $index"
+                  (click)="selectImage($index)"
+                  class="thumbnail"
+                  loading="lazy"
+                />
+              }
+            </div>
+          }
+        </div>
+
+        <div class="info-section card">
+          <div class="pill">{{ product.category }}</div>
+          <h1 class="product-name">{{ product.name }}</h1>
+          
+          <div class="product-meta">
+            <div class="rating" aria-label="Rating {{ product.rating }} out of 5">
+              <span class="star">★</span>
+              <span class="rating-value">{{ product.rating }}</span>
+              <span class="review-count">({{ product.reviewCount }} reviews)</span>
+            </div>
+          </div>
+
+          <div class="price-section">
+            @if (product.originalPrice && product.originalPrice > product.price) {
+              <span class="original-price">${{ product.originalPrice.toFixed(2) }}</span>
+            }
+            <span class="current-price">${{ product.price.toFixed(2) }}</span>
+          </div>
+
+          <p class="description">{{ product.description }}</p>
+
+          <div class="product-details">
+            <div class="detail-item">
+              <strong>Brand</strong>
+              <span>{{ product.brand || 'N/A' }}</span>
+            </div>
+            <div class="detail-item">
+              <strong>Color</strong>
+              <span>{{ product.color }}</span>
+            </div>
+            <div class="detail-item">
+              <strong>Stock</strong>
+              @if (product.stock > 0) {
+                <span class="in-stock">{{ product.stock }} available</span>
+              } @else {
+                <span class="out-of-stock">Out of Stock</span>
+              }
+            </div>
+          </div>
+
+          @if (isInStock()) {
+            <div class="add-to-cart-section">
+              <div class="quantity-selector">
+                <button class="icon-btn ghost" type="button" (click)="decreaseQuantity()" [disabled]="quantity <= 1">−</button>
+                <span class="quantity-value">{{ quantity }}</span>
+                <button class="icon-btn ghost" type="button" (click)="increaseQuantity()" [disabled]="quantity >= product.stock">+</button>
+              </div>
+
+              <button class="btn btn-primary add-to-cart-button" type="button" (click)="addToCart()">
+                Add to Cart
+              </button>
+            </div>
+          } @else {
+            <button class="btn btn-ghost add-to-cart-button" disabled>
+              Out of Stock
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+}

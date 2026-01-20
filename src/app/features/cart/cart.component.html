@@ -1,0 +1,93 @@
+<div class="cart-page">
+  <div class="container">
+    <div class="page-head">
+      <h1 class="page-title">Shopping Cart</h1>
+      @if (message) {
+        <div class="toast">{{ message }}</div>
+      }
+    </div>
+
+    @if (cartItems.length === 0) {
+      <div class="empty-cart card">
+        <div class="icon" aria-hidden="true">🛒</div>
+        <h2>Your cart is empty</h2>
+        <p>Start shopping to add items to your cart</p>
+        <a class="btn btn-primary" routerLink="/products">Browse Products</a>
+      </div>
+    } @else {
+      <div class="cart-content">
+        <div class="cart-items-section">
+          <div class="cart-header">
+            <h2>Cart Items ({{ cartItems.length }})</h2>
+            <button class="btn btn-danger ghost" type="button" (click)="clearCart()">Clear Cart</button>
+          </div>
+
+          <div class="cart-items">
+            @for (item of cartItems; track item.product.id) {
+              <div class="cart-item card">
+                <div class="item-content">
+                  <img [src]="item.product.image" [alt]="item.product.name" class="item-image" loading="lazy" />
+                  
+                  <div class="item-info">
+                    <h3 class="item-name">{{ item.product.name }}</h3>
+                    <p class="item-category">{{ item.product.category }}</p>
+                    <p class="item-price">${{ item.product.price.toFixed(2) }} each</p>
+                  </div>
+
+                  <div class="item-quantity">
+                    <button class="icon-btn ghost" type="button" (click)="updateQuantity(item, item.quantity - 1)">−</button>
+                    <span class="quantity-value">{{ item.quantity }}</span>
+                    <button class="icon-btn ghost" type="button" (click)="updateQuantity(item, item.quantity + 1)" [disabled]="item.quantity >= item.product.stock">+</button>
+                  </div>
+
+                  <div class="item-total">
+                    <strong>${{ getItemTotal(item).toFixed(2) }}</strong>
+                  </div>
+
+                  <button class="icon-btn danger" type="button" (click)="removeItem(item)" aria-label="Remove item">✕</button>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        @if (cartSummary) {
+          <div class="cart-summary card">
+            <h2>Order Summary</h2>
+            
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span>${{ cartSummary.subtotal.toFixed(2) }}</span>
+            </div>
+            
+            <div class="summary-row">
+              <span>Tax (10%)</span>
+              <span>${{ cartSummary.tax.toFixed(2) }}</span>
+            </div>
+            
+            <div class="summary-row">
+              <span>Shipping</span>
+              <span>
+                @if (cartSummary.shipping === 0) {
+                  <span class="free-shipping">FREE</span>
+                } @else {
+                  ${{ cartSummary.shipping.toFixed(2) }}
+                }
+              </span>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="summary-row total-row">
+              <span><strong>Total</strong></span>
+              <span><strong>${{ cartSummary.total.toFixed(2) }}</strong></span>
+            </div>
+
+            <a class="btn btn-primary checkout-button" routerLink="/checkout">Proceed to Checkout</a>
+            <a class="btn btn-ghost continue-shopping" routerLink="/products">Continue Shopping</a>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

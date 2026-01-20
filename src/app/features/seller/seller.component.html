@@ -1,0 +1,126 @@
+<div class="seller-page">
+  <div class="container">
+    <div class="page-header">
+      <h1 class="page-title">Product Management</h1>
+      <button class="btn btn-primary" type="button" (click)="openAddForm()">
+        <span class="icon">+</span>
+        Add Product
+      </button>
+    </div>
+
+    @if (showForm) {
+      <div class="product-form-card card">
+        <h2>{{ editingProduct ? 'Edit Product' : 'Add New Product' }}</h2>
+        <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+          <div class="form-row">
+            <div class="form-field">
+              <label class="label" for="name">Product Name</label>
+              <input id="name" class="input" type="text" formControlName="name" required />
+            </div>
+
+            <div class="form-field">
+              <label class="label" for="categoryId">Category</label>
+              <select id="categoryId" class="select" formControlName="categoryId" required>
+                <option value="">Select Category</option>
+                @for (category of categories; track category.id) {
+                  <option [value]="category.id">{{ category.name }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="form-field full-width">
+            <label class="label" for="description">Description</label>
+            <textarea id="description" class="textarea" formControlName="description" rows="4" required></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label class="label" for="price">Price</label>
+              <input id="price" class="input" type="number" formControlName="price" required />
+            </div>
+
+            <div class="form-field">
+              <label class="label" for="originalPrice">Original Price (Optional)</label>
+              <input id="originalPrice" class="input" type="number" formControlName="originalPrice" />
+            </div>
+
+            <div class="form-field">
+              <label class="label" for="stock">Stock</label>
+              <input id="stock" class="input" type="number" formControlName="stock" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label class="label" for="color">Color</label>
+              <input id="color" class="input" type="text" formControlName="color" required />
+            </div>
+
+            <div class="form-field">
+              <label class="label" for="brand">Brand</label>
+              <input id="brand" class="input" type="text" formControlName="brand" />
+            </div>
+          </div>
+
+          <div class="form-field full-width">
+            <label class="label" for="image">Main Image URL</label>
+            <input id="image" class="input" type="url" formControlName="image" required />
+          </div>
+
+          <div class="form-field full-width">
+            <label class="label" for="images">Additional Images (comma-separated URLs)</label>
+            <input id="images" class="input" type="text" formControlName="images" />
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn-ghost" type="button" (click)="cancelForm()">Cancel</button>
+            <button class="btn btn-primary" type="submit" [disabled]="productForm.invalid">
+              {{ editingProduct ? 'Update' : 'Create' }} Product
+            </button>
+          </div>
+        </form>
+      </div>
+    }
+
+    @if (loading) {
+      <app-loading></app-loading>
+    } @else {
+      <div class="products-table-card card">
+        <table class="products-table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Category</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (product of products; track product.id) {
+              <tr>
+                <td>
+                  <img [src]="product.image" [alt]="product.name" class="table-image" />
+                </td>
+                <td>{{ product.name }}</td>
+                <td>${{ product.price.toFixed(2) }}</td>
+                <td>{{ product.stock }}</td>
+                <td>{{ product.category }}</td>
+                <td>
+                  <button class="btn-icon" type="button" (click)="openEditForm(product)" title="Edit">
+                    <span class="icon">✏️</span>
+                  </button>
+                  <button class="btn-icon danger" type="button" (click)="deleteProduct(product)" title="Delete">
+                    <span class="icon">🗑️</span>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>

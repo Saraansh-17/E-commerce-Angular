@@ -1,0 +1,121 @@
+<div class="products-page">
+  <div class="container">
+    <h1 class="page-title">Products</h1>
+
+    <div class="filters-section card">
+      <div class="filters-grid">
+        <div class="field">
+          <label class="label" for="search">Search</label>
+          <div class="field-input">
+            <input id="search" class="input" type="text" [(ngModel)]="filters.search" (keyup.enter)="applyFilters()" placeholder="Search products..." />
+            <button class="btn btn-ghost icon" type="button" (click)="applyFilters()">⌕</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label" for="category">Category</label>
+          <select id="category" class="select" [(ngModel)]="filters.category" (change)="applyFilters()">
+            <option value="">All Categories</option>
+            @for (category of categories; track category.id) {
+              <option [value]="category.id">{{ category.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="label" for="color">Color</label>
+          <select id="color" class="select" [(ngModel)]="filters.color" (change)="applyFilters()">
+            <option value="">All Colors</option>
+            @for (color of colors; track color) {
+              <option [value]="color">{{ color }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="label" for="minPrice">Min Price</label>
+          <input id="minPrice" class="input" type="number" [(ngModel)]="filters.minPrice" (keyup.enter)="applyFilters()" placeholder="0" />
+        </div>
+
+        <div class="field">
+          <label class="label" for="maxPrice">Max Price</label>
+          <input id="maxPrice" class="input" type="number" [(ngModel)]="filters.maxPrice" (keyup.enter)="applyFilters()" placeholder="1000" />
+        </div>
+
+        <div class="field">
+          <label class="label" for="sortBy">Sort By</label>
+          <select id="sortBy" class="select" [(ngModel)]="filters.sortBy" (change)="applyFilters()">
+            <option value="name">Name</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="rating">Rating</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn btn-primary" type="button" (click)="applyFilters()">Apply Filters</button>
+        @if (hasActiveFilters()) {
+          <button class="btn btn-ghost" type="button" (click)="clearFilters()">Clear All</button>
+        }
+      </div>
+
+      <!-- Active Filters Chips -->
+      @if (hasActiveFilters()) {
+        <div class="active-filters">
+          @if (filters.search) {
+            <span class="chip">
+              Search: {{ filters.search }}
+              <button class="chip-close" type="button" (click)="removeFilter('search')">✕</button>
+            </span>
+          }
+          @if (filters.category) {
+            <span class="chip">
+              Category: {{ getCategoryName(filters.category) }}
+              <button class="chip-close" type="button" (click)="removeFilter('category')">✕</button>
+            </span>
+          }
+          @if (filters.color) {
+            <span class="chip">
+              Color: {{ filters.color }}
+              <button class="chip-close" type="button" (click)="removeFilter('color')">✕</button>
+            </span>
+          }
+          @if (filters.minPrice) {
+            <span class="chip">
+              Min: ${{ filters.minPrice }}
+              <button class="chip-close" type="button" (click)="removeFilter('minPrice')">✕</button>
+            </span>
+          }
+          @if (filters.maxPrice) {
+            <span class="chip">
+              Max: ${{ filters.maxPrice }}
+              <button class="chip-close" type="button" (click)="removeFilter('maxPrice')">✕</button>
+            </span>
+          }
+        </div>
+      }
+    </div>
+
+    @if (loading) {
+      <app-loading></app-loading>
+    } @else if (products.length === 0) {
+      <div class="no-products card">
+        <div class="icon" aria-hidden="true">📦</div>
+        <p>No products found. Try adjusting your filters.</p>
+      </div>
+    } @else {
+      <div class="products-grid">
+        @for (product of products; track product.id) {
+          <app-product-card [product]="product"></app-product-card>
+        }
+      </div>
+
+      <div class="pagination">
+        <button class="btn btn-ghost" type="button" (click)="onPageChange('prev')" [disabled]="page <= 1">Prev</button>
+        <span>Page {{ page }} of {{ totalPages }}</span>
+        <button class="btn btn-ghost" type="button" (click)="onPageChange('next')" [disabled]="page >= totalPages">Next</button>
+      </div>
+    }
+  </div>
+</div>

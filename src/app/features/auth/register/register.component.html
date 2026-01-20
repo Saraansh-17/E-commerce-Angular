@@ -1,0 +1,132 @@
+<div class="auth-page">
+  <div class="auth-container">
+    <div class="auth-card card">
+      <h1>Sign Up</h1>
+      <p class="subtitle">Create a new account to start shopping.</p>
+
+      @if (message) {
+        <div class="toast" [class.error]="messageType === 'error'">{{ message }}</div>
+      }
+
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+          <div class="field">
+            <label class="label" for="firstName">First Name</label>
+            <input
+              id="firstName"
+              class="input"
+              formControlName="firstName"
+              [class.error]="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched"
+              required
+            />
+            @if (registerForm.get('firstName')?.hasError('required') && registerForm.get('firstName')?.touched) {
+              <span class="error-message">First name is required</span>
+            }
+            @if (registerForm.get('firstName')?.hasError('minlength') && registerForm.get('firstName')?.touched) {
+              <span class="error-message">First name must be at least 2 characters</span>
+            }
+          </div>
+
+          <div class="field">
+            <label class="label" for="lastName">Last Name</label>
+            <input
+              id="lastName"
+              class="input"
+              formControlName="lastName"
+              [class.error]="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched"
+              required
+            />
+            @if (registerForm.get('lastName')?.hasError('required') && registerForm.get('lastName')?.touched) {
+              <span class="error-message">Last name is required</span>
+            }
+            @if (registerForm.get('lastName')?.hasError('minlength') && registerForm.get('lastName')?.touched) {
+              <span class="error-message">Last name must be at least 2 characters</span>
+            }
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label" for="email">Email</label>
+          <input
+            id="email"
+            class="input"
+            type="email"
+            formControlName="email"
+            [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+            required
+          />
+          @if (registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched) {
+            <span class="error-message">Email is required</span>
+          }
+          @if (registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched) {
+            <span class="error-message">Invalid email format</span>
+          }
+        </div>
+
+        <div class="field">
+          <label class="label" for="password">Password</label>
+          <input
+            id="password"
+            class="input"
+            type="password"
+            formControlName="password"
+            [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+            required
+          />
+          @if (registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched) {
+            <span class="error-message">Password is required</span>
+          }
+          @if (registerForm.get('password')?.hasError('minlength') && registerForm.get('password')?.touched) {
+            <span class="error-message">Password must be at least 6 characters</span>
+          }
+        </div>
+
+        <div class="field">
+          <label class="label" for="confirmPassword">Confirm Password</label>
+          <input
+            id="confirmPassword"
+            class="input"
+            type="password"
+            formControlName="confirmPassword"
+            [class.error]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
+            required
+          />
+          @if (registerForm.get('confirmPassword')?.hasError('required') && registerForm.get('confirmPassword')?.touched) {
+            <span class="error-message">Please confirm your password</span>
+          }
+          @if (registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched) {
+            <span class="error-message">Passwords do not match</span>
+          }
+        </div>
+
+        <div class="field">
+          <label class="label" for="role">Account Type</label>
+          <select
+            id="role"
+            class="select"
+            formControlName="role"
+          >
+            <option value="customer">Customer</option>
+            <option value="seller">Seller</option>
+          </select>
+        </div>
+
+        <button
+          class="btn btn-primary submit-button"
+          type="submit"
+          [disabled]="loading || registerForm.invalid"
+        >
+          @if (loading) {
+            Creating account...
+          } @else {
+            Sign Up
+          }
+        </button>
+      </form>
+
+      <p class="login-link">
+        Already have an account? <a routerLink="/auth/login">Login</a>
+      </p>
+    </div>
+  </div>
+</div>
