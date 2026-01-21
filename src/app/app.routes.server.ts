@@ -18,6 +18,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender
   },
   {
+    path: 'checkout',
+    renderMode: RenderMode.Server
+  },
+  {
     path: 'auth/login',
     renderMode: RenderMode.Prerender
   },

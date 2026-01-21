@@ -23,7 +23,7 @@ export class CartService {
   );
 
   constructor() {
-    if (this.isBrowser) {
+    if (typeof window !== 'undefined') {
       this.loadCartFromStorage();
     }
   }
@@ -120,7 +120,7 @@ export class CartService {
   }
 
   private loadCartFromStorage(): void {
-    if (!this.isBrowser) {
+    if (typeof window === 'undefined') {
       return;
     }
     try {
@@ -138,7 +138,7 @@ export class CartService {
   }
 
   private saveCartToStorage(items: CartItem[]): void {
-    if (!this.isBrowser) {
+    if (typeof window === 'undefined') {
       return;
     }
     try {

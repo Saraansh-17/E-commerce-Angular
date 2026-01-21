@@ -33,8 +33,10 @@
     <div #categoryTrack class="category-track" tabindex="0" aria-label="Category list">
       @for (category of categories; track category.id) {
         <a class="category-card" [routerLink]="['/products']" [queryParams]="{ category: category.id }">
+          <div class="category-icon">{{ getCategoryIcon(category.id) }}</div>
           <div class="category-name">{{ category.name }}</div>
           <div class="category-desc">{{ category.description }}</div>
+          <div class="category-count">Explore Collection →</div>
         </a>
       }
     </div>

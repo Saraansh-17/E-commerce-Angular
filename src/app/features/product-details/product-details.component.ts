@@ -1,10 +1,12 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart.service';
 import { Product } from '../../core/models/product.model';
 import { LoadingComponent } from '../../shared/components/loading/loading.component';
+import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-product-details',
@@ -17,11 +19,13 @@ import { LoadingComponent } from '../../shared/components/loading/loading.compon
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.scss'
 })
-export class ProductDetailsComponent implements OnInit {
+export class ProductDetailsComponent implements OnInit, OnDestroy {
   private readonly productService = inject(ProductService);
   private readonly cartService = inject(CartService);
   private readonly route = inject(ActivatedRoute);
   public readonly router = inject(Router);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private routeSubscription?: Subscription;
 
   product: Product | null = null;
   loading = true;
@@ -30,23 +34,49 @@ export class ProductDetailsComponent implements OnInit {
   selectedColor = '';
 
   ngOnInit(): void {
-    const productId = this.route.snapshot.paramMap.get('id');
-    if (productId) {
-      this.loadProduct(productId);
-    } else {
-      this.router.navigate(['/products']);
+    this.routeSubscription = this.route.paramMap.subscribe(params => {
+      const productId = params.get('id');
+      if (productId) {
+        this.loadProduct(productId);
+      } else {
+        this.loading = false;
+        this.router.navigate(['/products']);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
     }
   }
 
   private loadProduct(id: string): void {
-    this.productService.getProductById(id).subscribe(product => {
-      if (product) {
-        this.product = product;
-        this.selectedColor = product.color;
-      } else {
-        this.router.navigate(['/products']);
+    this.loading = true;
+    this.selectedImageIndex = 0;
+    this.quantity = 1;
+    this.product = null;
+    this.cdr.detectChanges();
+
+    this.productService.getProductById(id).pipe(take(1)).subscribe({
+      next: (product) => {
+        if (product) {
+          this.product = product;
+          this.selectedColor = product.color || '';
+          if (!product.images || product.images.length === 0) {
+            product.images = [product.image];
+          }
+        } else {
+          this.product = null;
+        }
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.loading = false;
+        this.product = null;
+        this.cdr.detectChanges();
       }
-      this.loading = false;
     });
   }
 
@@ -66,7 +96,6 @@ export class ProductDetailsComponent implements OnInit {
     }
   }
 
-
   addToCart(): void {
     if (!this.product) return;
 
@@ -77,7 +106,9 @@ export class ProductDetailsComponent implements OnInit {
 
     this.cartService.addToCart(this.product, this.quantity);
     const goCart = confirm('Product added to cart. Go to cart?');
-    if (goCart) this.router.navigate(['/cart']);
+    if (goCart) {
+      this.router.navigate(['/cart']);
+    }
   }
 
   isInStock(): boolean {

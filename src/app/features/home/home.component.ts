@@ -46,7 +46,19 @@ export class HomeComponent implements OnInit {
     const el = this.categoryTrack?.nativeElement;
     if (!el) return;
 
-    const amount = Math.max(240, Math.floor(el.clientWidth * 0.8));
+    const amount = Math.max(340, Math.floor(el.clientWidth * 0.8));
     el.scrollBy({ left: direction === 'left' ? -amount : amount, behavior: 'smooth' });
+  }
+
+  getCategoryIcon(categoryId: string): string {
+    const icons: Record<string, string> = {
+      'electronics': '📱',
+      'clothing': '👕',
+      'footwear': '👟',
+      'accessories': '👜',
+      'home-kitchen': '🏠',
+      'sports': '⚽'
+    };
+    return icons[categoryId] || '📦';
   }
 }

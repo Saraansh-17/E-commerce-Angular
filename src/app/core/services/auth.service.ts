@@ -25,7 +25,7 @@ export class AuthService {
   public readonly isAdmin = computed(() => this.currentUser()?.role === 'admin');
 
   constructor() {
-    if (this.isBrowser) {
+    if (typeof window !== 'undefined') {
       this.loadUserFromStorage();
     }
   }
@@ -83,7 +83,7 @@ export class AuthService {
   }
 
   logout(): void {
-    if (this.isBrowser) {
+    if (typeof window !== 'undefined') {
       localStorage.removeItem(this.TOKEN_KEY);
       localStorage.removeItem(this.USER_KEY);
     }
@@ -96,10 +96,9 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    if (!this.isBrowser) {
-      return null;
-    }
-    return localStorage.getItem(this.TOKEN_KEY);
+    return typeof window !== 'undefined'
+      ? localStorage.getItem(this.TOKEN_KEY)
+      : null;
   }
 
   isAuthenticatedCheck(): boolean {
@@ -107,7 +106,7 @@ export class AuthService {
   }
 
   private setAuth(authResponse: AuthResponse): void {
-    if (this.isBrowser) {
+    if (typeof window !== 'undefined') {
       localStorage.setItem(this.TOKEN_KEY, authResponse.token);
       localStorage.setItem(this.USER_KEY, JSON.stringify(authResponse.user));
     }
@@ -116,7 +115,7 @@ export class AuthService {
   }
 
   private loadUserFromStorage(): void {
-    if (!this.isBrowser) {
+    if (typeof window === 'undefined') {
       return;
     }
     try {

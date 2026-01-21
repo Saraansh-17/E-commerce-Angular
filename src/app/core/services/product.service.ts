@@ -197,7 +197,8 @@ export class ProductService {
   }
 
   getProductById(id: string): Observable<Product | undefined> {
-    return of(this.mockProducts.find(p => p.id === id)).pipe(delay(200));
+    const product = this.mockProducts.find(p => p.id === id);
+    return of(product).pipe(delay(200));
   }
 
   getFeaturedProducts(limit: number = 6): Observable<Product[]> {

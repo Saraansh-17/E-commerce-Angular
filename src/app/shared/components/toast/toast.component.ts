@@ -22,28 +22,28 @@ import { ToastService } from '../../../core/services/toast.service';
   styles: [`
     .toast-container {
       position: fixed;
-      top: 80px;
-      right: 16px;
+      top: 100px;
+      right: 24px;
       z-index: 1000;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 16px;
       pointer-events: none;
     }
 
     .toast {
       pointer-events: auto;
-      min-width: 300px;
-      max-width: 500px;
-      padding: 14px 16px;
-      background: #EDEADE;
-      color: var(--text-on-surface);
-      border-radius: var(--r-md);
+      min-width: 320px;
+      max-width: 520px;
+      padding: 18px 20px;
+      background: var(--royal-cream);
+      color: var(--royal-charcoal);
+      border-radius: var(--r-lg);
       box-shadow: var(--shadow-2);
-      border: 1px solid rgba(11, 18, 32, 0.12);
+      border: 1px solid rgba(10, 22, 40, 0.12);
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
       animation: slideIn 0.3s ease-out;
     }
 
@@ -60,45 +60,46 @@ import { ToastService } from '../../../core/services/toast.service';
 
     .toast-message {
       flex: 1;
-      font-size: 14px;
-      font-weight: 500;
+      font-size: 15px;
+      font-weight: 600;
     }
 
     .toast-action {
       background: transparent;
-      border: 1px solid rgba(109, 40, 217, 0.4);
-      color: var(--accent-violet-700);
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-weight: 600;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      color: var(--royal-gold);
+      padding: 8px 16px;
+      border-radius: var(--r-sm);
+      font-weight: 700;
       cursor: pointer;
-      font-size: 13px;
-      transition: all 0.2s;
+      font-size: 14px;
+      transition: all 0.2s ease;
     }
 
     .toast-action:hover {
-      background: rgba(109, 40, 217, 0.1);
-      border-color: var(--accent-violet-700);
+      background: rgba(212, 175, 55, 0.15);
+      border-color: var(--royal-gold);
     }
 
     .toast-close {
       background: transparent;
       border: none;
-      color: var(--text-on-surface-muted);
-      font-size: 20px;
+      color: rgba(44, 62, 80, 0.6);
+      font-size: 24px;
       line-height: 1;
       cursor: pointer;
       padding: 0;
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: color 0.2s;
+      transition: color 0.2s ease;
+      font-weight: 700;
     }
 
     .toast-close:hover {
-      color: var(--text-on-surface);
+      color: var(--royal-charcoal);
     }
   `]
 })

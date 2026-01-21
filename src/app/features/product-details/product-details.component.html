@@ -1,6 +1,19 @@
 @if (loading) {
   <app-loading></app-loading>
-} @else if (product) {
+} @else if (!product) {
+  <div class="product-details-page">
+    <div class="container">
+      <button class="btn btn-ghost back-button" type="button" (click)="router.navigate(['/products'])">
+        ← Back to Products
+      </button>
+      <div class="error-message">
+        <h2>Product not found</h2>
+        <p>The product you're looking for doesn't exist.</p>
+        <a class="btn btn-primary" routerLink="/products">Browse Products</a>
+      </div>
+    </div>
+  </div>
+} @else {
   <div class="product-details-page">
     <div class="container">
       <button class="btn btn-ghost back-button" type="button" (click)="router.navigate(['/products'])">
@@ -10,9 +23,9 @@
       <div class="product-content">
         <div class="image-section card">
           <div class="main-image">
-            <img [src]="product.images[selectedImageIndex] || product.image" [alt]="product.name" loading="lazy" />
+            <img [src]="(product.images && product.images[selectedImageIndex]) || product.image" [alt]="product.name" />
           </div>
-          @if (product.images.length > 1) {
+          @if (product.images && product.images.length > 1) {
             <div class="thumbnail-images">
               @for (image of product.images; track $index) {
                 <img
@@ -21,7 +34,6 @@
                   [class.active]="selectedImageIndex === $index"
                   (click)="selectImage($index)"
                   class="thumbnail"
-                  loading="lazy"
                 />
               }
             </div>
@@ -33,7 +45,7 @@
           <h1 class="product-name">{{ product.name }}</h1>
           
           <div class="product-meta">
-            <div class="rating" aria-label="Rating {{ product.rating }} out of 5">
+            <div class="rating">
               <span class="star">★</span>
               <span class="rating-value">{{ product.rating }}</span>
               <span class="review-count">({{ product.reviewCount }} reviews)</span>

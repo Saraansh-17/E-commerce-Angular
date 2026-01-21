@@ -1,16 +1,34 @@
 .product-details-page {
   padding: 32px 0;
-  min-height: calc(100vh - 200px);
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 24px;
 }
 
 .back-button {
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+.error-message {
+  text-align: center;
+  padding: 60px 32px;
+  color: var(--royal-white);
+
+  h2 {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 16px 0;
+    color: var(--royal-white);
+  }
+
+  p {
+    font-size: 16px;
+    color: var(--royal-white-muted);
+    margin: 0 0 32px 0;
+  }
 }
 
 .product-content {
@@ -26,167 +44,219 @@
 
 .image-section {
   padding: 12px;
-  .main-image {
+  background: var(--royal-cream);
+  border: 1px solid rgba(10, 22, 40, 0.08);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-1);
+}
+
+.main-image {
+  width: 100%;
+  aspect-ratio: 1;
+  margin-bottom: 16px;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--royal-cream);
+  border: 1px solid rgba(10, 22, 40, 0.08);
+
+  img {
     width: 100%;
-    aspect-ratio: 1;
-    margin-bottom: 16px;
-    border-radius: 8px;
-    overflow: hidden;
-    background: #f5f5f5;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
-
-  .thumbnail-images {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-
-    .thumbnail {
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
-      border-radius: 4px;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: border-color 0.2s;
-
-      &.active {
-        border-color: #667eea;
-      }
-
-      &:hover {
-        border-color: #764ba2;
-      }
-    }
+    height: 100%;
+    object-fit: cover;
   }
 }
 
+.thumbnail-images {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.thumbnail {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  background: var(--royal-cream);
+}
+
+.thumbnail:hover {
+  border-color: var(--royal-gold);
+}
+
+.thumbnail.active {
+  border-color: var(--royal-gold);
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+}
+
 .info-section {
+  padding: 24px;
+  background: var(--royal-cream);
+  border: 1px solid rgba(10, 22, 40, 0.08);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-1);
+
+  .pill {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: rgba(212, 175, 55, 0.15);
+    color: var(--royal-burgundy);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 16px;
+  }
+
   .product-name {
-    font-size: 32px;
-    font-weight: 600;
-    margin: 0 0 16px 0;
-    color: #2c3e50;
+    font-size: 40px;
+    font-weight: 800;
+    margin: 0 0 20px 0;
+    color: var(--royal-charcoal);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
   }
 
   .product-meta {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 20px;
     margin-bottom: 24px;
     flex-wrap: wrap;
 
     .rating {
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
 
-      .star-icon {
-        color: #ffc107;
+      .star {
+        color: var(--royal-gold);
         font-size: 20px;
-        width: 20px;
-        height: 20px;
+      }
+
+      .rating-value {
+        font-weight: 700;
+        color: var(--royal-charcoal);
+        font-size: 16px;
       }
 
       .review-count {
-        color: rgba(0, 0, 0, 0.6);
+        color: rgba(44, 62, 80, 0.6);
         font-size: 14px;
       }
-    }
-
-    .category {
-      color: rgba(0, 0, 0, 0.6);
-      font-size: 14px;
-      text-transform: uppercase;
     }
   }
 
   .price-section {
     display: flex;
     align-items: center;
-    gap: 16px;
-    margin-bottom: 24px;
+    gap: 20px;
+    margin-bottom: 32px;
 
     .current-price {
-      font-size: 36px;
-      font-weight: 700;
-      color: #2c3e50;
+      font-size: 42px;
+      font-weight: 800;
+      color: var(--royal-charcoal);
     }
 
     .original-price {
-      font-size: 24px;
-      color: rgba(0, 0, 0, 0.5);
+      font-size: 28px;
+      color: rgba(44, 62, 80, 0.5);
       text-decoration: line-through;
     }
   }
 
   .description {
-    font-size: 16px;
-    line-height: 1.6;
-    color: rgba(0, 0, 0, 0.7);
-    margin-bottom: 32px;
+    font-size: 17px;
+    line-height: 1.7;
+    color: rgba(44, 62, 80, 0.8);
+    margin-bottom: 40px;
   }
 
   .product-details {
-    margin-bottom: 32px;
-    padding: 24px;
-    background: #EDEADE;
-    border-radius: 8px;
+    margin-bottom: 40px;
+    padding: 32px;
+    background: var(--royal-cream);
+    border-radius: var(--r-md);
+    border: 1px solid rgba(10, 22, 40, 0.08);
 
     .detail-item {
-      margin-bottom: 12px;
-      font-size: 14px;
+      margin-bottom: 16px;
+      font-size: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--royal-charcoal);
 
       &:last-child {
         margin-bottom: 0;
       }
 
       strong {
-        color: #2c3e50;
-        margin-right: 8px;
+        color: var(--royal-charcoal);
+        font-weight: 700;
+      }
+
+      span:not(.in-stock):not(.out-of-stock) {
+        color: rgba(44, 62, 80, 0.8);
       }
 
       .in-stock {
-        color: #27ae60;
-        font-weight: 500;
+        color: var(--royal-success);
+        font-weight: 600;
       }
 
       .out-of-stock {
-        color: #e74c3c;
-        font-weight: 500;
+        color: var(--royal-danger);
+        font-weight: 600;
       }
     }
   }
 
   .add-to-cart-section {
     display: flex;
-    gap: 16px;
+    gap: 20px;
     align-items: center;
 
     .quantity-selector {
       display: flex;
       align-items: center;
-      gap: 8px;
-      border: 1px solid rgba(0, 0, 0, 0.2);
-      border-radius: 4px;
-      padding: 4px;
+      gap: 12px;
+      border: 1px solid rgba(10, 22, 40, 0.15);
+      border-radius: var(--r-md);
+      padding: 6px;
+      background: var(--royal-cream);
 
       .quantity-value {
-        min-width: 40px;
+        min-width: 50px;
         text-align: center;
-        font-weight: 500;
+        font-weight: 700;
+        font-size: 16px;
+        color: var(--royal-charcoal);
+      }
+
+      .icon-btn.ghost {
+        background: rgba(10, 22, 40, 0.08);
+        color: var(--royal-charcoal);
+        border-color: rgba(10, 22, 40, 0.15);
+      }
+
+      .icon-btn.ghost:hover {
+        background: rgba(10, 22, 40, 0.12);
+        border-color: var(--royal-gold);
+        color: var(--royal-charcoal);
       }
     }
 
     .add-to-cart-button {
       flex: 1;
-      padding: 12px 24px;
-      font-size: 16px;
+      padding: 16px 32px;
+      font-size: 17px;
+      font-weight: 700;
     }
   }
 }
@@ -194,11 +264,11 @@
 @media (max-width: 600px) {
   .info-section {
     .product-name {
-      font-size: 24px;
+      font-size: 32px;
     }
 
     .price-section .current-price {
-      font-size: 28px;
+      font-size: 32px;
     }
 
     .add-to-cart-section {
