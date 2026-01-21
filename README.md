@@ -1,6 +1,16 @@
 # 01Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.2.
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.0.
+
+## Prerequisites
+
+- **Node.js**: Version 18.x or higher (LTS recommended)
+- **npm**: Version 9.x or higher
+- **Angular CLI**: Version 21.0.0 or higher (compatible with 21.0.0 - 21.0.2)
+
+## Version Compatibility
+
+This project uses Angular 21.0.0 and is compatible with Angular CLI versions 21.0.0, 21.0.1, and 21.0.2. All Angular packages are aligned to version `^21.0.0` to ensure compatibility across team members.
 
 ## Development server
 

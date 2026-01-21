@@ -38,9 +38,6 @@ export class ProductDetailsComponent implements OnInit {
     }
   }
 
-  /**
-   * Load product details
-   */
   private loadProduct(id: string): void {
     this.productService.getProductById(id).subscribe(product => {
       if (product) {
@@ -69,9 +66,7 @@ export class ProductDetailsComponent implements OnInit {
     }
   }
 
-  /**
-   * Add product to cart
-   */
+
   addToCart(): void {
     if (!this.product) return;
 

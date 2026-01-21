@@ -31,9 +31,6 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  /**
-   * Load user orders
-   */
   private loadOrders(userId: string): void {
     this.orderService.getUserOrders(userId).subscribe(orders => {
       this.orders = orders;
@@ -41,9 +38,6 @@ export class OrdersComponent implements OnInit {
     });
   }
 
-  /**
-   * Get status color for chip
-   */
   getStatusColor(status: Order['status']): string {
     const colors: Record<Order['status'], string> = {
       pending: 'warn',
