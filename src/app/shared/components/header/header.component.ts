@@ -23,6 +23,7 @@ export class HeaderComponent {
 
   searchQuery = '';
   userMenuOpen = false;
+  mobileMenuOpen = false;
   
   readonly currentUser = this.authService.currentUser;
   readonly isAuthenticated = this.authService.isAuthenticated;
@@ -47,5 +48,19 @@ export class HeaderComponent {
 
   closeUserMenu(): void {
     this.userMenuOpen = false;
+  }
+
+  toggleMobileMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+    if (this.mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  }
+
+  closeMobileMenu(): void {
+    this.mobileMenuOpen = false;
+    document.body.style.overflow = '';
   }
 }

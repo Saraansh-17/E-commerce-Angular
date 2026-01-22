@@ -47,9 +47,6 @@ export class RegisterComponent {
     return null;
   }
 
-  /**
-   * Handle registration submission
-   */
   onSubmit(): void {
     if (this.registerForm.invalid) {
       return;
@@ -79,9 +76,6 @@ export class RegisterComponent {
     });
   }
 
-  /**
-   * Show toast message
-   */
   private showMessage(text: string, type: 'success' | 'error'): void {
     this.message = text;
     this.messageType = type;

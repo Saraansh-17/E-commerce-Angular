@@ -5,9 +5,6 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { AuthService } from '../../../core/services/auth.service';
 import { LoginCredentials } from '../../../core/models/user.model';
 
-/**
- * Login component
- */
 @Component({
   selector: 'app-login',
   standalone: true,

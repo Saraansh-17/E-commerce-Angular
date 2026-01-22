@@ -8,8 +8,7 @@ import { Product } from '../models/product.model';
   providedIn: 'root'
 })
 export class CartService {
-  private readonly platformId = inject(PLATFORM_ID);
-  private readonly isBrowser = isPlatformBrowser(this.platformId);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly CART_STORAGE_KEY = 'ecommerce_cart';
   private readonly cartItemsSubject = new BehaviorSubject<CartItem[]>([]);
   public readonly cartItems$ = this.cartItemsSubject.asObservable();
@@ -23,7 +22,7 @@ export class CartService {
   );
 
   constructor() {
-    if (typeof window !== 'undefined') {
+    if (this.isBrowser) {
       this.loadCartFromStorage();
     }
   }
@@ -138,7 +137,7 @@ export class CartService {
   }
 
   private saveCartToStorage(items: CartItem[]): void {
-    if (typeof window === 'undefined') {
+    if (!this.isBrowser) {
       return;
     }
     try {

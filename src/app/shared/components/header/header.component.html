@@ -5,6 +5,20 @@
       <span class="logo-text">E-Commerce</span>
     </a>
 
+    <button 
+      class="mobile-menu-btn" 
+      type="button" 
+      (click)="toggleMobileMenu()"
+      [attr.aria-expanded]="mobileMenuOpen"
+      aria-label="Toggle menu"
+      aria-controls="mobile-menu">
+      <span class="hamburger" [class.active]="mobileMenuOpen">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+
     <div class="search">
       <input
         class="search-input"
@@ -19,22 +33,25 @@
       </button>
     </div>
 
-    <nav class="nav">
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
-      <a routerLink="/products" routerLinkActive="active">Products</a>
-      @if (isSeller()) {
-        <a routerLink="/seller" routerLinkActive="active">Seller</a>
-      }
-    </nav>
-
-    <div class="actions">
-      <a class="icon-btn" routerLink="/cart" [attr.aria-label]="'Shopping cart with ' + cartItemCount() + ' items'">
-        <span class="icon" aria-hidden="true">🛒</span>
+    <nav class="nav" [class.mobile-open]="mobileMenuOpen" id="mobile-menu">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMobileMenu()">Home</a>
+      <a routerLink="/products" routerLinkActive="active" (click)="closeMobileMenu()">Products</a>
+      <a class="icon-btn icon" routerLink="/cart" [attr.aria-label]="'Shopping cart with ' + cartItemCount() + ' items'">
+        <span class="icon" aria-hidden="true">Cart</span>
         @if (cartItemCount() > 0) {
           <span class="badge" aria-hidden="true">{{ cartItemCount() }}</span>
         }
       </a>
+      @if (isSeller()) {
+        <a routerLink="/seller" routerLinkActive="active" (click)="closeMobileMenu()">Seller</a>
+      }
+      @if (isAuthenticated()) {
+        <a routerLink="/orders" (click)="closeMobileMenu()">My Orders</a>
+        <button class="menu-item danger" type="button" (click)="logout(); closeMobileMenu()">Logout</button>
+      }
+    </nav>
 
+    <div class="actions">
       @if (isAuthenticated()) {
         <div class="user">
           <button type="button" class="icon-btn" (click)="toggleUserMenu()" aria-label="Open user menu">
@@ -56,6 +73,8 @@
         <a class="btn btn-ghost" routerLink="/auth/login">Login</a>
         <a class="btn btn-primary" routerLink="/auth/register">Sign Up</a>
       }
+      
+      
     </div>
   </div>
 </header>

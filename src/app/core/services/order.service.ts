@@ -1,5 +1,4 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable, of, delay } from 'rxjs';
 import { Order, Address, PaymentInfo } from '../models/order.model';
 import { CartItem } from '../models/cart.model';
@@ -8,9 +7,7 @@ import { CartItem } from '../models/cart.model';
   providedIn: 'root'
 })
 export class OrderService {
-  private readonly http = inject(HttpClient);
-  private readonly apiUrl = '/api/orders';
-  private readonly orders: Order[] = [];
+  private mockOrders: Order[] = [];
 
   createOrder(
     userId: string,
@@ -23,39 +20,37 @@ export class OrderService {
     const shipping = subtotal > 100 ? 0 : 10;
     const total = subtotal + tax + shipping;
 
-    const newOrder: Order = {
-      id: (this.orders.length + 1).toString(),
-      userId,
-      items: [...items],
-      address,
-      paymentInfo,
+    const order: Order = {
+      id: (this.mockOrders.length + 1).toString(),
+      userId: userId,
+      items: items,
+      address: address,
+      paymentInfo: paymentInfo,
       status: 'pending',
-      subtotal,
-      tax,
-      shipping,
-      total,
+      subtotal: subtotal,
+      tax: tax,
+      shipping: shipping,
+      total: total,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
 
-    this.orders.push(newOrder);
-    return of(newOrder).pipe(delay(500));
+    this.mockOrders.push(order);
+    return of(order).pipe(delay(500));
   }
 
-  /**
-   * Get orders for a user
-   */
   getUserOrders(userId: string): Observable<Order[]> {
-    // In production: return this.http.get<Order[]>(`${this.apiUrl}/user/${userId}`);
-    return of(this.orders.filter(order => order.userId === userId)).pipe(delay(300));
+    const userOrders = this.mockOrders.filter(order => order.userId === userId);
+    return of(userOrders).pipe(delay(300));
   }
 
   getOrderById(orderId: string): Observable<Order | undefined> {
-    return of(this.orders.find(order => order.id === orderId)).pipe(delay(200));
+    const order = this.mockOrders.find(o => o.id === orderId);
+    return of(order).pipe(delay(200));
   }
 
   updateOrderStatus(orderId: string, status: Order['status']): Observable<Order> {
-    const order = this.orders.find(o => o.id === orderId);
+    const order = this.mockOrders.find(o => o.id === orderId);
     if (!order) {
       throw new Error('Order not found');
     }
