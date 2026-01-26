@@ -24,7 +24,6 @@ export class HeaderComponent {
   searchQuery = '';
   userMenuOpen = false;
   mobileMenuOpen = false;
-  private bodyScrollPosition = 0;
   
   readonly currentUser = this.authService.currentUser;
   readonly isAuthenticated = this.authService.isAuthenticated;
@@ -54,38 +53,14 @@ export class HeaderComponent {
   toggleMobileMenu(): void {
     this.mobileMenuOpen = !this.mobileMenuOpen;
     if (this.mobileMenuOpen) {
-      this.lockBodyScroll();
+      document.body.style.overflow = 'hidden';
     } else {
-      this.unlockBodyScroll();
+      document.body.style.overflow = '';
     }
   }
 
   closeMobileMenu(): void {
     this.mobileMenuOpen = false;
-    this.unlockBodyScroll();
-  }
-
-  private lockBodyScroll(): void {
-    // Store current scroll position
-    this.bodyScrollPosition = window.scrollY;
-    
-    // Prevent scrolling on body and html
-    document.body.style.overflow = 'hidden';
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${this.bodyScrollPosition}px`;
-    document.body.style.width = '100%';
-    document.documentElement.style.overflow = 'hidden';
-  }
-
-  private unlockBodyScroll(): void {
-    // Restore scrolling
     document.body.style.overflow = '';
-    document.body.style.position = '';
-    document.body.style.top = '';
-    document.body.style.width = '';
-    document.documentElement.style.overflow = '';
-    
-    // Restore scroll position
-    window.scrollTo(0, this.bodyScrollPosition);
   }
 }
