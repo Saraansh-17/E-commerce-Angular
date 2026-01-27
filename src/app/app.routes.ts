@@ -1,32 +1,27 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { sellerGuard } from './core/guards/seller.guard';
-import { HomeComponent } from './features/home/home.component';
-import { ProductsComponent } from './features/products/products.component';
-import { ProductDetailsComponent } from './features/product-details/product-details.component';
-import { CartComponent } from './features/cart/cart.component';
-import { CheckoutComponent } from './features/checkout/checkout.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    loadComponent: () => import('./features/home/home.component').then(m => m.HomeComponent)
   },
   {
     path: 'products/:id',
-    component: ProductDetailsComponent
+    loadComponent: () => import('./features/product-details/product-details.component').then(m => m.ProductDetailsComponent)
   },
   {
     path: 'products',
-    component: ProductsComponent
+    loadComponent: () => import('./features/products/products.component').then(m => m.ProductsComponent)
   },
   {
     path: 'cart',
-    component: CartComponent
+    loadComponent: () => import('./features/cart/cart.component').then(m => m.CartComponent)
   },
   {
     path: 'checkout',
-    component: CheckoutComponent,
+    loadComponent: () => import('./features/checkout/checkout.component').then(m => m.CheckoutComponent),
     canActivate: [authGuard]
   },
   {

@@ -1,15 +1,13 @@
 export interface User {
-  id: string;
+  id: number;
   email: string;
   firstName: string;
   lastName: string;
-  role: 'customer' | 'seller' | 'admin';
+  role: 'CUSTOMER' | 'SELLER' | 'ADMIN';
   createdAt: string;
 }
 
-/**
- * Login credentials
- */
+
 export interface LoginCredentials {
   email: string;
   password: string;
@@ -20,7 +18,7 @@ export interface RegisterData {
   password: string;
   firstName: string;
   lastName: string;
-  role?: 'customer' | 'seller';
+  role?: 'CUSTOMER' | 'SELLER';
 }
 
 export interface AuthResponse {

@@ -31,7 +31,7 @@ export class ProductsComponent implements OnInit {
   
   filters: ProductFilters = {
     search: '',
-    category: '',
+    category: undefined,
     minPrice: undefined,
     maxPrice: undefined,
     color: '',
@@ -55,7 +55,8 @@ export class ProductsComponent implements OnInit {
         this.filters.search = params['search'];
       }
       if (params['category']) {
-        this.filters.category = params['category'];
+        const categoryId = Number(params['category']);
+        this.filters.category = !isNaN(categoryId) ? categoryId : undefined;
       }
       this.loadProducts();
     });
@@ -71,6 +72,15 @@ export class ProductsComponent implements OnInit {
     });
   }
 
+  onCategoryChange(value: string | number): void {
+    if (value === '' || value === undefined || value === null) {
+      this.filters.category = undefined;
+    } else {
+      const categoryId = typeof value === 'string' ? Number(value) : value;
+      this.filters.category = !isNaN(categoryId) ? categoryId : undefined;
+    }
+  }
+
   applyFilters(): void {
     this.page = 1;
     this.updateQueryParams();
@@ -80,7 +90,7 @@ export class ProductsComponent implements OnInit {
   clearFilters(): void {
     this.filters = {
       search: '',
-      category: '',
+      category: undefined,
       minPrice: undefined,
       maxPrice: undefined,
       color: '',
@@ -102,7 +112,7 @@ export class ProductsComponent implements OnInit {
   private updateQueryParams(): void {
     const queryParams: any = {};
     if (this.filters.search) queryParams.search = this.filters.search;
-    if (this.filters.category) queryParams.category = this.filters.category;
+    if (this.filters.category !== undefined) queryParams.category = this.filters.category.toString();
     if (this.filters.color) queryParams.color = this.filters.color;
     if (this.filters.minPrice) queryParams.minPrice = this.filters.minPrice;
     if (this.filters.maxPrice) queryParams.maxPrice = this.filters.maxPrice;
@@ -119,7 +129,7 @@ export class ProductsComponent implements OnInit {
    * Remove a filter chip
    */
   removeFilter(key: keyof ProductFilters): void {
-    if (key === 'minPrice' || key === 'maxPrice') {
+    if (key === 'minPrice' || key === 'maxPrice' || key === 'category') {
       (this.filters as any)[key] = undefined;
     } else {
       (this.filters as any)[key] = '';
@@ -138,7 +148,7 @@ export class ProductsComponent implements OnInit {
     );
   }
   
-  getCategoryName(categoryId: string | undefined): string {
+  getCategoryName(categoryId: number | undefined): string {
     if (!categoryId) return '';
     const category = this.categories.find(c => c.id === categoryId);
     return category ? category.name : '';

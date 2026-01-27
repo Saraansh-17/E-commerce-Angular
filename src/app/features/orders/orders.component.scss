@@ -1,324 +1,288 @@
 .orders-page {
-  padding: 32px 0;
-  min-height: calc(100vh - 200px);
-}
-
-@media (min-width: 768px) {
-  .orders-page {
-    padding: 48px 0;
-  }
+  padding: 3rem 0;
+  min-height: calc(100vh - 12.5rem);
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 75rem;
   margin: 0 auto;
-  padding: 0 16px;
-}
-
-@media (min-width: 768px) {
-  .container {
-    padding: 0 24px;
-  }
+  padding: 0 1.5rem;
 }
 
 .page-title {
-  font-size: 32px;
+  font-size: 2.625rem;
   font-weight: 800;
-  margin: 0 0 24px 0;
+  margin: 0 0 2rem 0;
   color: var(--royal-white);
   letter-spacing: -0.02em;
 }
 
-@media (min-width: 768px) {
-  .page-title {
-    font-size: 42px;
-    margin-bottom: 32px;
-  }
-}
-
 .no-orders {
   text-align: center;
-  padding: 60px 24px;
+  padding: 5rem 2rem;
   color: var(--royal-charcoal);
-}
 
-@media (min-width: 768px) {
-  .no-orders {
-    padding: 80px 32px;
+  .icon-large {
+    font-size: 5rem;
+    display: block;
+    margin-bottom: 1.5rem;
+    opacity: 0.6;
   }
-}
 
-.no-orders .icon-large {
-  font-size: 60px;
-  display: block;
-  margin-bottom: 20px;
-  opacity: 0.6;
-}
-
-@media (min-width: 768px) {
-  .no-orders .icon-large {
-    font-size: 80px;
-    margin-bottom: 24px;
+  h2 {
+    font-size: 2rem;
+    margin: 0 0 0.75rem 0;
+    color: var(--royal-charcoal);
+    font-weight: 700;
   }
-}
 
-.no-orders h2 {
-  font-size: 24px;
-  margin: 0 0 12px 0;
-  color: var(--royal-charcoal);
-  font-weight: 700;
-}
-
-@media (min-width: 768px) {
-  .no-orders h2 {
-    font-size: 32px;
-    margin-bottom: 16px;
-  }
-}
-
-.no-orders p {
-  font-size: 16px;
-  color: rgba(44, 62, 80, 0.7);
-  margin: 0 0 24px 0;
-}
-
-@media (min-width: 768px) {
-  .no-orders p {
-    font-size: 18px;
-    margin-bottom: 32px;
+  p {
+    font-size: 1.125rem;
+    color: rgba(44, 62, 80, 0.7);
+    margin: 0 0 2rem 0;
   }
 }
 
 .orders-list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-}
-
-@media (min-width: 768px) {
-  .orders-list {
-    gap: 24px;
-  }
+  gap: 1.5rem;
 }
 
 .order-card {
   background: var(--royal-cream);
   border: 1px solid rgba(10, 22, 40, 0.08);
   border-radius: var(--r-lg);
-  padding: 20px;
+  padding: 2rem;
   box-shadow: var(--shadow-1);
-}
 
-@media (min-width: 768px) {
-  .order-card {
-    padding: 32px;
-  }
-}
-
-.order-card .order-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-@media (min-width: 768px) {
-  .order-card .order-header {
+  .order-header {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
-    gap: 16px;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .order-info {
+      h3 {
+        margin: 0 0 0.375rem 0;
+        font-size: 1.5rem;
+        color: var(--royal-charcoal);
+        font-weight: 700;
+      }
+
+      .order-date {
+        margin: 0;
+        font-size: 0.9375rem;
+        color: rgba(44, 62, 80, 0.6);
+      }
+    }
+
+    .chip {
+      padding: 0.625rem 1.125rem;
+      border-radius: 999px;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+
+      &.warn {
+        background: rgba(197, 48, 48, 0.15);
+        color: var(--royal-danger);
+        border: 1px solid rgba(197, 48, 48, 0.3);
+      }
+
+      &.accent {
+        background: rgba(212, 175, 55, 0.15);
+        color: var(--royal-gold);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+      }
+
+      &.primary {
+        background: rgba(139, 38, 53, 0.15);
+        color: var(--royal-burgundy);
+        border: 1px solid rgba(139, 38, 53, 0.3);
+      }
+    }
+  }
+
+  .divider {
+    height: 1px;
+    background: rgba(10, 22, 40, 0.1);
+    margin: 1.25rem 0;
+  }
+
+  .order-items {
+    margin-bottom: 1.25rem;
+  }
+
+  .order-item {
+    display: flex;
+    gap: 1.25rem;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid rgba(10, 22, 40, 0.08);
+
+    &:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .item-image {
+      width: 5.625rem;
+      height: 5.625rem;
+      object-fit: cover;
+      border-radius: var(--r-sm);
+      flex-shrink: 0;
+    }
+
+    .item-details {
+      flex: 1;
+      min-width: 0;
+
+      .item-name {
+        margin: 0 0 0.375rem 0;
+        font-size: 1.0625rem;
+        font-weight: 600;
+        color: var(--royal-charcoal);
+      }
+
+      .item-quantity {
+        margin: 0;
+        font-size: 0.9375rem;
+        color: rgba(44, 62, 80, 0.6);
+      }
+    }
+
+    .item-price {
+      font-weight: 700;
+      color: var(--royal-charcoal);
+      font-size: 1.125rem;
+      flex-shrink: 0;
+    }
+  }
+
+  .order-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+
+    .order-total {
+      font-size: 1.375rem;
+      color: var(--royal-charcoal);
+      font-weight: 800;
+    }
   }
 }
 
-.order-card .order-header .order-info h3 {
-  margin: 0 0 4px 0;
-  font-size: 20px;
-  color: var(--royal-charcoal);
-  font-weight: 700;
-}
-
-@media (min-width: 768px) {
-  .order-card .order-header .order-info h3 {
-    font-size: 24px;
-    margin-bottom: 6px;
+@media (max-width: 767px) {
+  .orders-page {
+    padding: 2rem 0;
   }
-}
 
-.order-card .order-header .order-info .order-date {
-  margin: 0;
-  font-size: 13px;
-  color: rgba(44, 62, 80, 0.6);
-}
-
-@media (min-width: 768px) {
-  .order-card .order-header .order-info .order-date {
-    font-size: 15px;
+  .container {
+    padding: 0 1rem;
   }
-}
 
-.order-card .order-header .chip {
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-@media (min-width: 768px) {
-  .order-card .order-header .chip {
-    padding: 10px 18px;
-    font-size: 13px;
+  .page-title {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
   }
-}
 
-.order-card .order-header .chip.warn {
-  background: rgba(197, 48, 48, 0.15);
-  color: var(--royal-danger);
-  border: 1px solid rgba(197, 48, 48, 0.3);
-}
+  .no-orders {
+    padding: 3.75rem 1.5rem;
 
-.order-card .order-header .chip.accent {
-  background: rgba(212, 175, 55, 0.15);
-  color: var(--royal-gold);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-}
+    .icon-large {
+      font-size: 3.75rem;
+      margin-bottom: 1.25rem;
+    }
 
-.order-card .order-header .chip.primary {
-  background: rgba(139, 38, 53, 0.15);
-  color: var(--royal-burgundy);
-  border: 1px solid rgba(139, 38, 53, 0.3);
-}
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
 
-.order-card .divider {
-  height: 1px;
-  background: rgba(10, 22, 40, 0.1);
-  margin: 16px 0;
-}
-
-@media (min-width: 768px) {
-  .order-card .divider {
-    margin: 20px 0;
+    p {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
   }
-}
 
-.order-card .order-items {
-  margin-bottom: 16px;
-}
-
-@media (min-width: 768px) {
-  .order-card .order-items {
-    margin-bottom: 20px;
+  .orders-list {
+    gap: 1.25rem;
   }
-}
 
-.order-card .order-item {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  margin-bottom: 16px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid rgba(10, 22, 40, 0.08);
-}
+  .order-card {
+    padding: 1.25rem;
 
-@media (min-width: 768px) {
-  .order-card .order-item {
-    gap: 20px;
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-  }
-}
+    .order-header {
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+      gap: 0.75rem;
 
-.order-card .order-item:last-child {
-  margin-bottom: 0;
-  padding-bottom: 0;
-  border-bottom: none;
-}
+      .order-info {
+        h3 {
+          font-size: 1.25rem;
+          margin-bottom: 0.25rem;
+        }
 
-.order-card .order-item .item-image {
-  width: 70px;
-  height: 70px;
-  object-fit: cover;
-  border-radius: var(--r-sm);
-  flex-shrink: 0;
-}
+        .order-date {
+          font-size: 0.8125rem;
+        }
+      }
 
-@media (min-width: 768px) {
-  .order-card .order-item .item-image {
-    width: 90px;
-    height: 90px;
-  }
-}
+      .chip {
+        padding: 0.5rem 0.875rem;
+        font-size: 0.6875rem;
+      }
+    }
 
-.order-card .order-item .item-details {
-  flex: 1;
-  min-width: 0;
-}
+    .divider {
+      margin: 1rem 0;
+    }
 
-.order-card .order-item .item-details .item-name {
-  margin: 0 0 4px 0;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--royal-charcoal);
-}
+    .order-items {
+      margin-bottom: 1rem;
+    }
 
-@media (min-width: 768px) {
-  .order-card .order-item .item-details .item-name {
-    font-size: 17px;
-    margin-bottom: 6px;
-  }
-}
+    .order-item {
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
 
-.order-card .order-item .item-details .item-quantity {
-  margin: 0;
-  font-size: 13px;
-  color: rgba(44, 62, 80, 0.6);
-}
+      .item-image {
+        width: 4.375rem;
+        height: 4.375rem;
+      }
 
-@media (min-width: 768px) {
-  .order-card .order-item .item-details .item-quantity {
-    font-size: 15px;
-  }
-}
+      .item-details {
+        .item-name {
+          font-size: 0.9375rem;
+          margin-bottom: 0.25rem;
+        }
 
-.order-card .order-item .item-price {
-  font-weight: 700;
-  color: var(--royal-charcoal);
-  font-size: 16px;
-  flex-shrink: 0;
-}
+        .item-quantity {
+          font-size: 0.8125rem;
+        }
+      }
 
-@media (min-width: 768px) {
-  .order-card .order-item .item-price {
-    font-size: 18px;
-  }
-}
+      .item-price {
+        font-size: 1rem;
+      }
+    }
 
-.order-card .order-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 16px;
-  flex-wrap: wrap;
-  gap: 12px;
-}
+    .order-footer {
+      margin-top: 1rem;
 
-@media (min-width: 768px) {
-  .order-card .order-footer {
-    margin-top: 20px;
-  }
-}
-
-.order-card .order-footer .order-total {
-  font-size: 20px;
-  color: var(--royal-charcoal);
-  font-weight: 800;
-}
-
-@media (min-width: 768px) {
-  .order-card .order-footer .order-total {
-    font-size: 22px;
+      .order-total {
+        font-size: 1.25rem;
+      }
+    }
   }
 }

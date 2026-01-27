@@ -48,12 +48,12 @@ export class CartService {
     }
   }
 
-  removeFromCart(productId: string): void {
+  removeFromCart(productId: number): void {
     const updatedItems = this.cartItemsSubject.value.filter(item => item.product.id !== productId);
     this.updateCart(updatedItems);
   }
 
-  updateQuantity(productId: string, quantity: number): void {
+  updateQuantity(productId: number, quantity: number): void {
     if (quantity <= 0) {
       this.removeFromCart(productId);
       return;
@@ -65,7 +65,7 @@ export class CartService {
     this.updateCart(updatedItems);
   }
 
-  toggleItemSelection(productId: string): void {
+  toggleItemSelection(productId: number): void {
     const updatedItems = this.cartItemsSubject.value.map(item =>
       item.product.id === productId ? { ...item, selected: !item.selected } : item
     );
@@ -103,11 +103,11 @@ export class CartService {
     });
   }
 
-  isInCart(productId: string): boolean {
+  isInCart(productId: number): boolean {
     return this.cartItemsSubject.value.some(item => item.product.id === productId);
   }
 
-  getQuantity(productId: string): number {
+  getQuantity(productId: number): number {
     const item = this.cartItemsSubject.value.find(item => item.product.id === productId);
     return item ? item.quantity : 0;
   }

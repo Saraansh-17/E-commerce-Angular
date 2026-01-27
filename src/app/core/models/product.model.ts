@@ -1,5 +1,5 @@
 export interface Product {
-  id: string;
+  id: number;
   name: string;
   description: string;
   price: number;
@@ -7,7 +7,7 @@ export interface Product {
   image: string;
   images: string[];
   category: string;
-  categoryId: string;
+  categoryId: number;
   color: string;
   stock: number;
   rating: number;
@@ -21,7 +21,7 @@ export interface Product {
  * Category model for product categorization
  */
 export interface Category {
-  id: string;
+  id: number;
   name: string;
   slug: string;
   image?: string;
@@ -30,7 +30,7 @@ export interface Category {
 
 export interface ProductFilters {
   search?: string;
-  category?: string;
+  category?: number;
   minPrice?: number;
   maxPrice?: number;
   color?: string;

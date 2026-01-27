@@ -1,61 +1,67 @@
-import { Injectable } from '@angular/core';
-import { Observable, of, delay } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Order, Address, PaymentInfo } from '../models/order.model';
 import { CartItem } from '../models/cart.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
-  private mockOrders: Order[] = [];
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = `${environment.apiUrl}/api/orders`;
 
   createOrder(
-    userId: string,
+    userId: number,
     items: CartItem[],
     address: Address,
     paymentInfo: PaymentInfo
   ): Observable<Order> {
-    const subtotal = items.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
-    const tax = subtotal * 0.1;
-    const shipping = subtotal > 100 ? 0 : 10;
-    const total = subtotal + tax + shipping;
+    // Map CartItem[] to backend CartItemDTO[] format
+    const cartItems = items.map(item => ({
+      product: {
+        id: item.product.id,
+        name: item.product.name,
+        description: item.product.description,
+        price: item.product.price,
+        originalPrice: item.product.originalPrice,
+        image: item.product.image,
+        images: item.product.images,
+        category: item.product.category,
+        categoryId: item.product.categoryId,
+        color: item.product.color,
+        stock: item.product.stock,
+        rating: item.product.rating,
+        reviewCount: item.product.reviewCount,
+        brand: item.product.brand,
+        createdAt: item.product.createdAt,
+        updatedAt: item.product.updatedAt
+      },
+      quantity: item.quantity,
+      selected: item.selected
+    }));
 
-    const order: Order = {
-      id: (this.mockOrders.length + 1).toString(),
-      userId: userId,
-      items: items,
+    const orderRequest = {
+      items: cartItems,
       address: address,
-      paymentInfo: paymentInfo,
-      status: 'pending',
-      subtotal: subtotal,
-      tax: tax,
-      shipping: shipping,
-      total: total,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      paymentInfo: paymentInfo
     };
 
-    this.mockOrders.push(order);
-    return of(order).pipe(delay(500));
+    return this.http.post<Order>(this.apiUrl, orderRequest);
   }
 
-  getUserOrders(userId: string): Observable<Order[]> {
-    const userOrders = this.mockOrders.filter(order => order.userId === userId);
-    return of(userOrders).pipe(delay(300));
+  getUserOrders(userId: number): Observable<Order[]> {
+    return this.http.get<Order[]>(this.apiUrl);
   }
 
-  getOrderById(orderId: string): Observable<Order | undefined> {
-    const order = this.mockOrders.find(o => o.id === orderId);
-    return of(order).pipe(delay(200));
+  getOrderById(orderId: number): Observable<Order> {
+    return this.http.get<Order>(`${this.apiUrl}/${orderId}`);
   }
 
-  updateOrderStatus(orderId: string, status: Order['status']): Observable<Order> {
-    const order = this.mockOrders.find(o => o.id === orderId);
-    if (!order) {
-      throw new Error('Order not found');
-    }
-    order.status = status;
-    order.updatedAt = new Date().toISOString();
-    return of(order).pipe(delay(300));
+  updateOrderStatus(orderId: number, status: Order['status']): Observable<Order> {
+    return this.http.put<Order>(`${this.apiUrl}/${orderId}/status`, null, {
+      params: new HttpParams().set('status', status)
+    });
   }
 }

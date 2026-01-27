@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { ProductService } from '../../core/services/product.service';
 import { Category } from '../../core/models/product.model';
 import { ProductCardComponent } from '../../shared/components/product-card/product-card.component';
@@ -32,13 +33,18 @@ export class HomeComponent implements OnInit {
   }
 
   private loadData(): void {
-    this.productService.getCategories().subscribe(categories => {
-      this.categories = categories;
-    });
-
-    this.productService.getFeaturedProducts(6).subscribe(products => {
-      this.featuredProducts = products;
-      this.loading = false;
+    forkJoin({
+      categories: this.productService.getCategories(),
+      featuredProducts: this.productService.getFeaturedProducts(6)
+    }).subscribe({
+      next: ({ categories, featuredProducts }) => {
+        this.categories = categories;
+        this.featuredProducts = featuredProducts;
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+      }
     });
   }
 

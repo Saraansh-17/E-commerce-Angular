@@ -37,7 +37,13 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     this.routeSubscription = this.route.paramMap.subscribe(params => {
       const productId = params.get('id');
       if (productId) {
-        this.loadProduct(productId);
+        const id = Number(productId);
+        if (!isNaN(id)) {
+          this.loadProduct(id);
+        } else {
+          this.loading = false;
+          this.router.navigate(['/products']);
+        }
       } else {
         this.loading = false;
         this.router.navigate(['/products']);
@@ -51,7 +57,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  private loadProduct(id: string): void {
+  private loadProduct(id: number): void {
     this.loading = true;
     this.selectedImageIndex = 0;
     this.quantity = 1;

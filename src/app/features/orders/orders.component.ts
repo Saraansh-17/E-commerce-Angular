@@ -31,7 +31,7 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  private loadOrders(userId: string): void {
+  private loadOrders(userId: number): void {
     this.orderService.getUserOrders(userId).subscribe(orders => {
       this.orders = orders;
       this.loading = false;
@@ -40,11 +40,11 @@ export class OrdersComponent implements OnInit {
 
   getStatusColor(status: Order['status']): string {
     const colors: Record<Order['status'], string> = {
-      pending: 'warn',
-      processing: 'accent',
-      shipped: 'primary',
-      delivered: 'primary',
-      cancelled: 'warn'
+      PENDING: 'warn',
+      PROCESSING: 'accent',
+      SHIPPED: 'primary',
+      DELIVERED: 'primary',
+      CANCELLED: 'warn'
     };
     return colors[status] || '';
   }

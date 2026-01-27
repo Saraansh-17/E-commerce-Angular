@@ -14,8 +14,8 @@
 
         <div class="field">
           <label class="label" for="category">Category</label>
-          <select id="category" class="select" [(ngModel)]="filters.category" (change)="applyFilters()">
-            <option value="">All Categories</option>
+          <select id="category" class="select" [ngModel]="filters.category" (ngModelChange)="onCategoryChange($event)" (change)="applyFilters()">
+            <option [value]="undefined">All Categories</option>
             @for (category of categories; track category.id) {
               <option [value]="category.id">{{ category.name }}</option>
             }

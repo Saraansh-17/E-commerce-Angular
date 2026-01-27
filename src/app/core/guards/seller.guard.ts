@@ -8,7 +8,7 @@ export const sellerGuard: CanActivateFn = (route, state) => {
 
   const user = authService.getCurrentUser();
 
-  if (user && (user.role === 'seller')) {
+  if (user && (user.role === 'SELLER' || user.role === 'ADMIN')) {
     return true;
   }
 

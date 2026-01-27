@@ -33,9 +33,7 @@ export class CartComponent implements OnInit {
     });
   }
 
-  /**
-   * Update item quantity
-   */
+ 
   updateQuantity(item: CartItem, quantity: number): void {
     if (quantity <= 0) {
       this.removeItem(item);

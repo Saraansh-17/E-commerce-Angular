@@ -36,12 +36,8 @@
     <nav class="nav" [class.mobile-open]="mobileMenuOpen" id="mobile-menu">
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMobileMenu()">Home</a>
       <a routerLink="/products" routerLinkActive="active" (click)="closeMobileMenu()">Products</a>
-      <a class="icon-btn icon" routerLink="/cart" [attr.aria-label]="'Shopping cart with ' + cartItemCount() + ' items'">
-        <span class="icon" aria-hidden="true">Cart</span>
-        @if (cartItemCount() > 0) {
-          <span class="badge" aria-hidden="true">{{ cartItemCount() }}</span>
-        }
-      </a>
+      <a routerLink="/cart" routerLinkActive="active" (click)="closeMobileMenu()">Cart</a>
+      
       @if (isSeller()) {
         <a routerLink="/seller" routerLinkActive="active" (click)="closeMobileMenu()">Seller</a>
       }

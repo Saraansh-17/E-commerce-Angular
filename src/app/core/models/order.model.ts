@@ -20,11 +20,11 @@ export interface PaymentInfo {
   cvv?: string;
 }
 
-export type OrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+export type OrderStatus = 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
 
 export interface Order {
-  id: string;
-  userId: string;
+  id: number;
+  userId: number;
   items: CartItem[];
   address: Address;
   paymentInfo: PaymentInfo;

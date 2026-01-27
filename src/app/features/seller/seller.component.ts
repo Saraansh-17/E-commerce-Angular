@@ -57,8 +57,8 @@ export class SellerComponent implements OnInit {
    * Load products and categories
    */
   private loadData(): void {
-    this.productService.getProducts(undefined, 1, 100).subscribe(response => {
-      this.products = response.products;
+    this.productService.getSellerProducts().subscribe(products => {
+      this.products = products;
       this.loading = false;
     });
 
@@ -87,8 +87,10 @@ export class SellerComponent implements OnInit {
    */
   openEditForm(product: Product): void {
     this.editingProduct = product;
+    const category = this.categories.find(c => c.id === product.categoryId);
     this.productForm.patchValue({
       ...product,
+      category: category?.name || product.category,
       images: product.images.join(', ')
     });
     this.showForm = true;
@@ -112,8 +114,11 @@ export class SellerComponent implements OnInit {
     }
 
     const formValue = this.productForm.value;
+    const selectedCategory = this.categories.find(c => c.id === Number(formValue.categoryId));
     const productData = {
       ...formValue,
+      categoryId: formValue.categoryId ? Number(formValue.categoryId) : undefined,
+      category: selectedCategory?.name || formValue.category || '',
       images: formValue.images ? formValue.images.split(',').map((img: string) => img.trim()) : [formValue.image]
     };
 

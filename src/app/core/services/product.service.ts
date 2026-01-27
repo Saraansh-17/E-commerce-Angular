@@ -1,95 +1,74 @@
-import { Injectable } from '@angular/core';
-import { Observable, map, of, delay } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
 import { Product, Category, ProductFilters, PaginatedProducts } from '../models/product.model';
-import { MOCK_PRODUCTS, MOCK_CATEGORIES } from '../data/mock-data';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
+  private readonly http = inject(HttpClient);
+  private readonly apiUrl = `${environment.apiUrl}/api/products`;
+
   getProducts(filters?: ProductFilters, page: number = 1, pageSize: number = 12): Observable<PaginatedProducts> {
-    let filteredProducts = [...MOCK_PRODUCTS];
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString());
 
-    // Apply filters
     if (filters?.search) {
-      const searchLower = filters.search.toLowerCase();
-      filteredProducts = filteredProducts.filter(p =>
-        p.name.toLowerCase().includes(searchLower) ||
-        p.description.toLowerCase().includes(searchLower)
-      );
+      params = params.set('search', filters.search);
     }
-
     if (filters?.category) {
-      filteredProducts = filteredProducts.filter(p => p.categoryId === filters.category);
+      params = params.set('category', filters.category.toString());
     }
-
     if (filters?.color) {
-      filteredProducts = filteredProducts.filter(p => p.color === filters.color);
+      params = params.set('color', filters.color);
     }
-
     if (filters?.minPrice !== undefined) {
-      filteredProducts = filteredProducts.filter(p => p.price >= filters.minPrice!);
+      params = params.set('minPrice', filters.minPrice.toString());
     }
-
     if (filters?.maxPrice !== undefined) {
-      filteredProducts = filteredProducts.filter(p => p.price <= filters.maxPrice!);
+      params = params.set('maxPrice', filters.maxPrice.toString());
     }
-
-    // Apply sorting
     if (filters?.sortBy) {
-      switch (filters.sortBy) {
-        case 'name':
-          filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
-          break;
-        case 'price-asc':
-          filteredProducts.sort((a, b) => a.price - b.price);
-          break;
-        case 'price-desc':
-          filteredProducts.sort((a, b) => b.price - a.price);
-          break;
-        case 'rating':
-          filteredProducts.sort((a, b) => b.rating - a.rating);
-          break;
-      }
+      params = params.set('sortBy', filters.sortBy);
     }
 
-    // Pagination
-    const totalItems = filteredProducts.length;
-    const totalPages = Math.ceil(totalItems / pageSize);
-    const startIndex = (page - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
-
-    return of({
-      products: paginatedProducts,
-      meta: {
-        page,
-        pageSize,
-        totalItems,
-        totalPages
-      }
-    }).pipe(delay(300));
+    return this.http.get<{ products: Product[]; meta: { page: number; pageSize: number; totalItems: number; totalPages: number } }>(this.apiUrl, { params })
+      .pipe(
+        map(response => ({
+          products: response.products,
+          meta: {
+            page: response.meta.page,
+            pageSize: response.meta.pageSize,
+            totalItems: Number(response.meta.totalItems),
+            totalPages: response.meta.totalPages
+          }
+        }))
+      );
   }
 
-  getProductById(id: string): Observable<Product | undefined> {
-    const product = MOCK_PRODUCTS.find(p => p.id === id);
-    return of(product).pipe(delay(200));
+  getProductById(id: number): Observable<Product> {
+    return this.http.get<Product>(`${this.apiUrl}/${id}`);
   }
 
   getFeaturedProducts(limit: number = 6): Observable<Product[]> {
-    const featured = MOCK_PRODUCTS
-      .sort((a, b) => b.rating - a.rating)
-      .slice(0, limit);
-    return of(featured).pipe(delay(200));
+    return this.http.get<Product[]>(`${this.apiUrl}/featured`, {
+      params: new HttpParams().set('limit', limit.toString())
+    });
   }
 
   getCategories(): Observable<Category[]> {
-    return of(MOCK_CATEGORIES).pipe(delay(200));
+    return this.http.get<Category[]>(`${this.apiUrl}/categories`);
   }
 
-  getProductsByCategory(categoryId: string): Observable<Product[]> {
-    const products = MOCK_PRODUCTS.filter(p => p.categoryId === categoryId);
-    return of(products).pipe(delay(200));
+  getProductsByCategory(categoryId: number): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}/category/${categoryId}`);
+  }
+
+  getSellerProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(`${this.apiUrl}/seller/my-products`);
   }
 
   searchProducts(query: string): Observable<Product[]> {
@@ -99,34 +78,44 @@ export class ProductService {
   }
 
   createProduct(product: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>): Observable<Product> {
-    const newProduct: Product = {
-      ...product,
-      id: (MOCK_PRODUCTS.length + 1).toString(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+    const productRequest = {
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      originalPrice: product.originalPrice,
+      image: product.image,
+      images: product.images,
+      category: product.category,
+      categoryId: product.categoryId,
+      color: product.color,
+      stock: product.stock,
+      rating: product.rating,
+      reviewCount: product.reviewCount,
+      brand: product.brand
     };
-    MOCK_PRODUCTS.push(newProduct);
-    return of(newProduct).pipe(delay(300));
+    return this.http.post<Product>(this.apiUrl, productRequest);
   }
 
-  updateProduct(id: string, product: Partial<Product>): Observable<Product> {
-    const index = MOCK_PRODUCTS.findIndex(p => p.id === id);
-    if (index === -1) {
-      throw new Error('Product not found');
-    }
-    MOCK_PRODUCTS[index] = {
-      ...MOCK_PRODUCTS[index],
-      ...product,
-      updatedAt: new Date().toISOString()
-    };
-    return of(MOCK_PRODUCTS[index]).pipe(delay(300));
+  updateProduct(id: number, product: Partial<Product>): Observable<Product> {
+    const productRequest: any = {};
+    if (product.name !== undefined) productRequest.name = product.name;
+    if (product.description !== undefined) productRequest.description = product.description;
+    if (product.price !== undefined) productRequest.price = product.price;
+    if (product.originalPrice !== undefined) productRequest.originalPrice = product.originalPrice;
+    if (product.image !== undefined) productRequest.image = product.image;
+    if (product.images !== undefined) productRequest.images = product.images;
+    if (product.category !== undefined) productRequest.category = product.category;
+    if (product.categoryId !== undefined) productRequest.categoryId = product.categoryId;
+    if (product.color !== undefined) productRequest.color = product.color;
+    if (product.stock !== undefined) productRequest.stock = product.stock;
+    if (product.rating !== undefined) productRequest.rating = product.rating;
+    if (product.reviewCount !== undefined) productRequest.reviewCount = product.reviewCount;
+    if (product.brand !== undefined) productRequest.brand = product.brand;
+
+    return this.http.put<Product>(`${this.apiUrl}/${id}`, productRequest);
   }
 
-  deleteProduct(id: string): Observable<void> {
-    const index = MOCK_PRODUCTS.findIndex(p => p.id === id);
-    if (index !== -1) {
-      MOCK_PRODUCTS.splice(index, 1);
-    }
-    return of(undefined).pipe(delay(300));
+  deleteProduct(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }
